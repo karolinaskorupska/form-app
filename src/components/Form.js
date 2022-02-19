@@ -82,7 +82,7 @@ class Form extends Component {
 
         }
 
-
+        
         //return
         //helping function
         console.log("isValid is" + isValid)
@@ -96,17 +96,17 @@ class Form extends Component {
         this.validate();
         //if it works, set new State
         if (this.validate()) {
-            this.setState({
-                isValidated: true,
-                name: "",
-                surname: "",
-                pesel: ""
-            });
+            // this.setState({
+            //     isValidated: true,
+            //     name: "",
+            //     surname: "",
+            //     pesel: ""
+            // });
             //help function
             console.log("Zwalidowano");
             //utwórz nowy kontakt w bazie danych
             this.createNewContact();
-            // this.peselDecode();
+            this.peselDecode(); 
         };
     };
     //decode pesel
@@ -137,18 +137,12 @@ class Form extends Component {
        else {
            year += 1900;
        }
-       //date checkout
-    //    console.log("year", year)
-    //    console.log("month", month)
-    //    console.log("day", day)
 
        //birth date
        let birthDate = new Date();
        birthDate.setFullYear(year, month, day);
-       console.log(birthDate)
-
        this.setState({
-           birthDate: birthDate
+           birthDate: birthDate.toDateString()
        })
     }
 
