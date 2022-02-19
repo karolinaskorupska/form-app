@@ -3,17 +3,17 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 10vmin;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+    animation: App-logo-spin infinite 10s linear;
   }
 }
 
-.App-header {
+body{
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -24,15 +24,91 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App-header {
+  margin: 10%;
+}
+
+.App-main {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+label, input {
+  display: block;
+}
+
+input[type="text"] {
+  border: 1px solid white;
+  border-radius: 3px;
+  margin: 8px;
+  height: 30px;
+  padding: 0 5px;
+  box-sizing: border-box;
+}
+
+input:target {
+  border: 0.5px solid grey;
+}
+
+.birth-date {
+  display: flex;
+  flex-direction: column;
+}
+
+.birth-date span {
+  display: block;
+  margin: 4px 0;
+}
+
+.App-submit {
+  width: 150px;
+  height: 50px;
+  border-radius: 3px;
+  font-size: calc(10px + 2vmin);
+  background-color: white;
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.App-submit:hover {
+  transform:scale(110%);
+  border: 0.5px solid rgba(255, 68, 0, 0.288);
+}
+
+.alert {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 50%;
+  overflow: auto;
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.alert span {
+  margin-right: 15px;
 }
 
 @keyframes App-logo-spin {
-  from {
+  0%{
     transform: rotate(0deg);
   }
-  to {
-    transform: rotate(360deg);
+  20%{
+    transform: rotate(10deg);
+  }
+  60%{
+    transform: rotate(0deg);
+  }
+  80%{
+    transform:rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg)
   }
 }

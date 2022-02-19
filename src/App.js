@@ -1,15 +1,15 @@
-import logo from './logo.svg';
+import logo from "./logo-heycloud-white.png";
 import './App.css';
-import Contact from "./components/Contact";
+import Form from "./components/Form";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-          heycloud form
+        <img src={logo} className="App-logo"/>
       </header>
-      <main>
-        <Contact/>
+      <main className="App-main">
+        <Form/>
       </main>
     </div>
   );

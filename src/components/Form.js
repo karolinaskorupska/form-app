@@ -4,9 +4,9 @@ import React, { Component } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import {
-  faCheckCircle,
-  faInfoCircle,
-  faTimesCircle
+    faCheckCircle,
+    faInfoCircle,
+    faTimesCircle
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,7 +20,8 @@ class Form extends Component {
         errorName: "",
         errorSurname: "",
         errorPesel: "",
-        birthDate:"",
+        birthDate: "",
+        clickedAlert:false,
         isValidated: false
     };
     // creates a data and pushes it to file db.json 
@@ -72,28 +73,28 @@ class Form extends Component {
         }
         //pesel validation
         //regex
-        const reg= /^[0-9]{11}$/;
-        if(reg.test(pesel) == false){
+        const reg = /^[0-9]{11}$/;
+        if (reg.test(pesel) == false) {
             isValid = false;
             console.log("pesel should have 9 numbers")
             this.setState({ errorPesel: "Pesel should have 9 numbers" });
         } else {
             //check pesel
-            let digits = ("" +pesel).split("");
-            if((parseInt(pesel.substring(4,6)) > 31) || (parseInt(pesel.substring(2,4)) > 12))
-            isValid = false;
+            let digits = ("" + pesel).split("");
+            if ((parseInt(pesel.substring(4, 6)) > 31) || (parseInt(pesel.substring(2, 4)) > 12))
+                isValid = false;
 
-            let checksum = (1*parseInt(digits[0]) + 3*parseInt(digits[1]) + 7*parseInt(digits[2]) + 9*parseInt(digits[3]) + 1*parseInt(digits[4]) + 3*parseInt(digits[5]) + 7*parseInt(digits[6]) + 9*parseInt(digits[7]) + 1*parseInt(digits[8]) + 3*parseInt(digits[9]))%10;
-            if(checksum==0) checksum = 10;
+            let checksum = (1 * parseInt(digits[0]) + 3 * parseInt(digits[1]) + 7 * parseInt(digits[2]) + 9 * parseInt(digits[3]) + 1 * parseInt(digits[4]) + 3 * parseInt(digits[5]) + 7 * parseInt(digits[6]) + 9 * parseInt(digits[7]) + 1 * parseInt(digits[8]) + 3 * parseInt(digits[9])) % 10;
+            if (checksum == 0) checksum = 10;
             checksum = 10 - checksum;
             //if test are ok, set is Valid to true
-            if (parseInt(digits[10])==checksum) {
+            if (parseInt(digits[10]) == checksum) {
                 isValid = true;
             }
 
         }
 
-        
+
         //return
         //helping function
         console.log("isValid is" + isValid)
@@ -109,146 +110,154 @@ class Form extends Component {
         if (this.validate()) {
             this.setState({
                 isValidated: true,
-                // name: "",
-                // surname: "",
-                // pesel: ""
             });
-            //help function
-            console.log("Zwalidowano");
-            //utwórz nowy kontakt w bazie danych
+            //make new contact in database
             this.createNewContact();
-            this.peselDecode(); 
+            //show birth date
+            this.peselDecode();
         };
     };
     //decode pesel
     peselDecode = () => {
         const pesel = this.state.pesel;
         //cutting numbers from string of numbers
-        let year = parseInt(pesel.substring(0,2), 10);
-        let month = parseInt(pesel.substring(2,4), 10)-1;
-        let day = parseInt(pesel.substring(4,6), 10);
+        let year = parseInt(pesel.substring(0, 2), 10);
+        let month = parseInt(pesel.substring(2, 4), 10) - 1;
+        let day = parseInt(pesel.substring(4, 6), 10);
 
-       //adding numbers 
-       if(month>80){
-           year = year + 1800;
-           month = month -80;
-       }
-       else if (month > 60) {
-           year = year + 2200;
-           month = month - 60;
-       }
-       else if (month > 40) {
-           year = year + 2100;
-           month = month -40;
-       }
-       else if ( month > 20) {
-           year = year +2000;
-           month = month -20;
-       }
-       else {
-           year += 1900;
-       }
+        //adding numbers 
+        if (month > 80) {
+            year = year + 1800;
+            month = month - 80;
+        }
+        else if (month > 60) {
+            year = year + 2200;
+            month = month - 60;
+        }
+        else if (month > 40) {
+            year = year + 2100;
+            month = month - 40;
+        }
+        else if (month > 20) {
+            year = year + 2000;
+            month = month - 20;
+        }
+        else {
+            year += 1900;
+        }
 
-       //birth date
-       let birthDate = new Date();
-       birthDate.setFullYear(year, month, day);
-       this.setState({
-           birthDate: birthDate.toDateString()
-       })
+        //birth date
+        let birthDate = new Date();
+        birthDate.setFullYear(year, month, day);
+        this.setState({
+            birthDate: birthDate.toDateString()
+        })
     }
-
+    //alert click
+    closeAlert = event => {
+        event.preventDefault();
+        this.setState({
+            clickedAlert:true
+        })
+    }
 
     render() {
         const {
-            name, surname, pesel, errorName, errorSurname, errorPesel, birthDate, isValidated
+            name, surname, pesel, errorName, errorSurname, errorPesel, birthDate, isValidated, clickedAlert
         } = this.state;
 
         return (
             <>
-            {isValidated && (
-          <div className="alert green ok">
-            <FontAwesomeIcon
-              icon={["fas", "check-circle"]}
-              className="fas fa-check-circle"
-              fixedWidth
-            ></FontAwesomeIcon>
-            Dziękujemy!
-          </div>
-        )}
-        {errorName && (
-          <div className=" alert red error">
-            <FontAwesomeIcon
-              icon={["fas", "times-circle"]}
-              className="fas fa-times-circle"
-              fixedWidth
-            ></FontAwesomeIcon>
-            {errorName}
-          </div>
-        )}
-        {errorSurname && (
-          <div className="alert red error">
-            <FontAwesomeIcon
-              icon={["fas", "times-circle"]}
-              className="fas fa-times-circle"
-              fixedWidth
-            ></FontAwesomeIcon>
-            {errorSurname}
-          </div>
-        )}
-        {errorPesel && (
-          <div className="alert red error">
-            <FontAwesomeIcon
-              icon={["fas", "times-circle"]}
-              className="fas fa-times-circle"
-              fixedWidth
-            ></FontAwesomeIcon>
-            {errorPesel}
-          </div>
-        )}
-            <form>
-                <div className="name">
-                    <label>Your NAME</label>
-                    <input
-                    type="text"
-                    name="name"
-                    value={name}
-                    onChange={this.handleChange}
-                    placeholder="John"
-                    />
-                </div>
-                <div className="surname">
-                    <label>Your SURNAME</label>
-                    <input
-                    type="text"
-                    name="surname"
-                    value={surname}
-                    onChange={this.handleChange}
-                    placeholder="Doe"
-                    />
-                </div>
-                <div className="pesel">
-                    <label>Your PESEL</label>
-                    <input
-                    type="text"
-                    name="pesel"
-                    value={pesel}
-                    onChange={this.handleChange}
-                    placeholder="1223456789"
-                    />
-                </div>
-                <div className="birth-date">
-                    <span>Your birth date: </span>
-                    <span>{birthDate}</span>
-                </div>
-            </form>
-            <button
-            className="submit"
-            type="submit"
-            value="submit"
-            onClick={this.handleSubmit}
-            >SUBMIT</button>
+                {errorName && (
+                    <div className={!clickedAlert ? "alert red error": "alert-closed"}>
+                        <span>{errorName}</span>
+                        <FontAwesomeIcon
+                            icon={["fas", "times-circle"]}
+                            className="fas fa-times-circle"
+                            fixedWidth
+                            onClick={this.closeAlert}
+                        ></FontAwesomeIcon>
+                    </div>
+                )}
+                {errorSurname && (
+                    <div className={!clickedAlert ? "alert red error": "alert-closed"}>
+                        <span>{errorSurname}</span>
+                        <FontAwesomeIcon
+                            icon={["fas", "times-circle"]}
+                            className="fas fa-times-circle"
+                            fixedWidth
+                            onClick={this.closeAlert}
+                        ></FontAwesomeIcon>
+                    </div>
+                )}
+                {errorPesel && (
+                    <div className={!clickedAlert ? "alert red error": "alert-closed"}>
+                        <span>{errorPesel}</span>
+                        <FontAwesomeIcon
+                            icon={["fas", "times-circle"]}
+                            className="fas fa-times-circle"
+                            fixedWidth
+                            onClick={this.closeAlert}
+                        ></FontAwesomeIcon>
+                    </div>
+                )}
+                <form className="App-form">
+                    <div className="name">
+                        <label>Your NAME</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={name}
+                            onChange={this.handleChange}
+                            placeholder="John"
+                        />
+                    </div>
+                    <div className="surname">
+                        <label>Your SURNAME</label>
+                        <input
+                            type="text"
+                            name="surname"
+                            value={surname}
+                            onChange={this.handleChange}
+                            placeholder="Doe"
+                        />
+                    </div>
+                    <div className="pesel">
+                        <label>Your PESEL</label>
+                        <input
+                            type="text"
+                            name="pesel"
+                            value={pesel}
+                            onChange={this.handleChange}
+                            placeholder="1223456789"
+                        />
+                    </div>
+                    <div className="birth-date">
+                        <span>Your birth date: </span>
+                        <span>{birthDate}</span>
+                    </div>
+                </form>
+                {!isValidated && (
+                <button
+                    className="App-submit"
+                    type="submit"
+                    value="submit"
+                    onClick={this.handleSubmit}
+                >SUBMIT</button>
+                )}
+                                {isValidated && (
+                    <div className={!clickedAlert ? "alert green ok" : "alert-closed"}>
+                        <span>Dziękujemy!</span>
+                        <FontAwesomeIcon
+                            icon={["fas", "check-circle"]}
+                            className="fas fa-check-circle"
+                            fixedWidth
+                            onClick={this.closeAlert}
+                        ></FontAwesomeIcon>
+                    </div>
+                )}
             </>
-        )   
+        )
     }
 }
 
