@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-// import { ScreenClassRender } from "react-grid-system";
+
+//fontawesome:
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import {
+  faCheckCircle,
+  faInfoCircle,
+  faTimesCircle
+} from "@fortawesome/free-solid-svg-icons";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+library.add(fab, faCheckCircle, faInfoCircle, faTimesCircle);
 
 class Form extends Component {
     state = {
@@ -96,12 +107,12 @@ class Form extends Component {
         this.validate();
         //if it works, set new State
         if (this.validate()) {
-            // this.setState({
-            //     isValidated: true,
-            //     name: "",
-            //     surname: "",
-            //     pesel: ""
-            // });
+            this.setState({
+                isValidated: true,
+                // name: "",
+                // surname: "",
+                // pesel: ""
+            });
             //help function
             console.log("Zwalidowano");
             //utwórz nowy kontakt w bazie danych
@@ -149,11 +160,51 @@ class Form extends Component {
 
     render() {
         const {
-            name, surname, pesel, errorName, errorSurname, errorPesel, birthDate
+            name, surname, pesel, errorName, errorSurname, errorPesel, birthDate, isValidated
         } = this.state;
 
         return (
             <>
+            {isValidated && (
+          <div className="alert green ok">
+            <FontAwesomeIcon
+              icon={["fas", "check-circle"]}
+              className="fas fa-check-circle"
+              fixedWidth
+            ></FontAwesomeIcon>
+            Dziękujemy!
+          </div>
+        )}
+        {errorName && (
+          <div className=" alert red error">
+            <FontAwesomeIcon
+              icon={["fas", "times-circle"]}
+              className="fas fa-times-circle"
+              fixedWidth
+            ></FontAwesomeIcon>
+            {errorName}
+          </div>
+        )}
+        {errorSurname && (
+          <div className="alert red error">
+            <FontAwesomeIcon
+              icon={["fas", "times-circle"]}
+              className="fas fa-times-circle"
+              fixedWidth
+            ></FontAwesomeIcon>
+            {errorSurname}
+          </div>
+        )}
+        {errorPesel && (
+          <div className="alert red error">
+            <FontAwesomeIcon
+              icon={["fas", "times-circle"]}
+              className="fas fa-times-circle"
+              fixedWidth
+            ></FontAwesomeIcon>
+            {errorPesel}
+          </div>
+        )}
             <form>
                 <div className="name">
                     <label>Your NAME</label>
