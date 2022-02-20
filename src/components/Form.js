@@ -229,6 +229,7 @@ class Form extends Component {
                             name="pesel"
                             value={pesel}
                             onChange={this.handleChange}
+                            onClick={this.peselDecode}
                             placeholder="1223456789"
                         />
                     </div>

@@ -95,6 +95,11 @@ input:target {
   margin-right: 15px;
 }
 
+.fas:hover {
+  cursor: pointer;
+  transform: scale(110%);
+}
+
 @keyframes App-logo-spin {
   0%{
     transform: rotate(0deg);
